@@ -276,4 +276,28 @@ class Forge extends \CodeIgniter\Database\Forge
 	}
 
 	//--------------------------------------------------------------------
+	
+	
+	/**
+	 * TODO: move function to \App\Libraries and extend this forge
+	 * Adds column and sets as foreign key in existing table
+	 *
+	 * @param string $table Table name
+	 * @param string $fieldName
+	 * @param string $foreignTable
+	 * @param string $foreignField
+	 * @param string $onUpdate
+	 * @param string $onDelete
+	 * @return boolean
+	 */
+	public function setForeignKey(string $table, string $fieldName = '', string $foreignTable = '', string $foreignField = '', string $onUpdate = 'CASCADE', string $onDelete = 'CASCADE'): bool
+	{
+		$keyName = $table . '_' . $fieldName . '_foreign';
+
+		return $this->addColumn($table,
+			"CONSTRAINT {$keyName} FOREIGN KEY({$fieldName}) ".
+			"REFERENCES {$foreignTable}({$foreignField})".
+			"ON UPDATE {$onUpdate} ON DELETE {$onDelete}"
+		);
+	}
 }
